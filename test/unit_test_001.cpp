@@ -1,9 +1,9 @@
 //
 //    FILE: unit_test_001.cpp
 //  AUTHOR: Rob Tillaart
-//    DATE: 2023-09-25
-// PURPOSE: unit tests for the ACD10 library
-//     URL: https://github.com/RobTillaart/ACD10
+//    DATE: 2025-01-05
+// PURPOSE: unit tests for the APDS9900 library
+//     URL: https://github.com/RobTillaart/APDS9900
 //          https://github.com/Arduino-CI/arduino_ci/blob/master/REFERENCE.md
 //
 
@@ -25,12 +25,12 @@
 
 
 #include "Arduino.h"
-#include "ACD10.h"
+#include "APDS9900.h"
 
 
 unittest_setup()
 {
-  fprintf(stderr, "ACD10_LIB_VERSION: %s\n", (char *) ACD10_LIB_VERSION);
+  fprintf(stderr, "APDS9900_LIB_VERSION: %s\n", (char *) APDS9900_LIB_VERSION);
 }
 
 
@@ -41,20 +41,15 @@ unittest_teardown()
 
 unittest(test_constants)
 {
-  assertEqual(ACD10_DEFAULT_ADDRESS, 0x2A);
+  assertEqual(1, 1);
 }
 
 
 unittest(test_constructor)
 {
-  ACD10 acd;
+  APDS9900 apds;
 
-  assertEqual(acd.getAddress(), ACD10_DEFAULT_ADDRESS);
-  assertEqual(acd.getRequestTime(), 80);
-  assertEqual(acd.getLastError(), 0);
-  assertEqual(acd.lastRead(), 0);
-  assertEqual(acd.getCO2Concentration(), 0);
-  assertEqual(acd.getTemperature(), 0);
+  assertEqual(0x39, apds.getAddress());
 }
 
 

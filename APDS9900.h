@@ -2,7 +2,7 @@
 //    FILE: APDS9900.h
 //  AUTHOR: Rob Tillaart
 // VERSION: 0.1.0
-//    DATE: 2024-12-xx
+//    DATE: 2024-12-09
 // PURPOSE: Arduino library for the APDS9900 environment sensor.
 //     URL: https://github.com/RobTillaart/APDS9900
 //
@@ -107,8 +107,8 @@ public:
 
 
 protected:
-  uint8_t  _address;
-  TwoWire  * _wire;
+  const uint8_t _address = 0x39;
+  TwoWire  *    _wire;
 
   int      _error;
 

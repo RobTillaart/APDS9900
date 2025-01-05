@@ -1,7 +1,7 @@
 //
 //    FILE: APDS9900.cpp
 //  AUTHOR: Rob Tillaart
-//    DATE: 2024-12-xx
+//    DATE: 2024-12-09
 // VERSION: 0.1.0
 // PURPOSE: Arduino library for the APDS9900 environment sensor.
 //     URL: https://github.com/RobTillaart/APDS9900
@@ -46,7 +46,6 @@
 APDS9900::APDS9900(TwoWire *wire)
 {
   _wire = wire;
-  _address = 0x39;
   _error = 0;
 }
 
