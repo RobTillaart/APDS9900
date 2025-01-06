@@ -231,45 +231,99 @@ void APDS9900::setProximityPulseCount(uint8_t value)
 }
 
 
-//  PDRIVE  P22
-bool APDS9900::setLedDriveStrength(uint8_t value)
+uint8_t APDS9900::getProximityPulseCount()
 {
-  if (value > 3) return false;
-  uint8_t val = readRegister(APDS9900_CONTROL);
-  val &= 0x3F;
-  val |= (value << 6);
-  writeRegister(APDS9900_CONTROL, val);
-  return true;
+  uint8_t value = readRegister(APDS9900_PPCOUNT);
+  return value;
 }
 
 
-//  PDIODE  P22
+//
+//  CONFIGURATION datasheet P22
+//
+//  PDRIVE - datasheet P22
+bool APDS9900::setLedDriveStrength(uint8_t strength)
+{
+  if (strength > 3) return false;
+  uint8_t control = readRegister(APDS9900_CONTROL);
+  control &= 0x3F;
+  control |= (strength << 6);
+  writeRegister(APDS9900_CONTROL, control);
+  return true;
+}
+
+uint8_t APDS9900::getLedDriveStrength()
+{
+  uint8_t value = readRegister(APDS9900_CONTROL);
+  value >>= 6;
+  return value;
+}
+
+//  PDIODE - datasheet P22
+//  must be 2.
 bool APDS9900::setProximityDiodeSelect(uint8_t channel)
 {
-  if (channel > 1) return false;
-  uint8_t val = readRegister(APDS9900_CONTROL);
-  val &= 0x3F;
-  val |= (channel << 6);
-  writeRegister(APDS9900_CONTROL, val);
+  if (channel > 3) return false;
+  uint8_t control = readRegister(APDS9900_CONTROL);
+  control &= 0xCF;
+  control |= (channel << 4);
+  writeRegister(APDS9900_CONTROL, control);
   return true;
 }
 
-
-//  PGAIN  P22
-//  not implemented as it is a constant value 0 
-
-//  AGAIN  P22
-bool APDS9900::setALSGainControl(uint8_t value)
+uint8_t APDS9900::getProximityDiodeSelect()
 {
-  if (value > 3) return false;
-  uint8_t val = readRegister(APDS9900_CONTROL);
-  val &= 0xFC;
-  val |= value;
-  writeRegister(APDS9900_CONTROL, val);
+  uint8_t value = readRegister(APDS9900_CONTROL);
+  value >>= 4;
+  value &= 0x03;
+  return value;
+}
+
+//  PGAIN - datasheet P22
+bool APDS9900::setProximityGain(uint8_t gain)
+{
+  if (gain > 3) return false;
+  uint8_t control = readRegister(APDS9900_CONTROL);
+  control &= 0xF3;
+  control |= (gain << 2);
+  writeRegister(APDS9900_CONTROL, control);
   return true;
 }
 
+uint8_t APDS9900::getProximityGain()
+{
+  uint8_t value = readRegister(APDS9900_CONTROL);
+  value >>= 2;
+  value &= 0x03;
+  return value;
+}
 
+//  AGAIN - datasheet P22
+//  0 = 1x,  1 = 8x,  2 = 16x,  3 = 120x
+bool APDS9900::setALSGain(uint8_t gain)
+{
+  if (gain > 3) return false;
+  uint8_t control = readRegister(APDS9900_CONTROL);
+  control &= 0xFC;
+  control |= gain;
+  writeRegister(APDS9900_CONTROL, control);
+  return true;
+}
+
+uint8_t APDS9900::getALSGain()
+{
+  uint8_t value = readRegister(APDS9900_CONTROL);
+  value &= 0x03;
+  if (value == 0) return 1;
+  if (value == 1) return 8;
+  if (value == 2) return 16;
+  return 120;
+}
+
+
+//
+//  MISC
+//
 //  REV  P22
 uint8_t APDS9900::getRevision()
 {
@@ -287,6 +341,32 @@ uint8_t APDS9900::getDeviceID()
 uint8_t APDS9900::getStatus()
 {
   return readRegister(APDS9900_STATUS);
+}
+
+//  LUX datasheet page 9
+float APDS9900::getLux(float GA)
+{
+  //  calibration constants from datasheet Page 9
+  //  coefficients open air
+  float B = 2.23;   //  ??
+  float C = 0.7;    //  ??
+  float D = 1.42;   //  ??
+  float DF = 52;    //  device factor ??
+
+  float channel0 = getALS_CDATA();
+  float channel1 = getALS_IRDATA();
+  float ALSIT = getIntegrationTime();
+  float AGAIN = getALSGain();
+
+  float IAC1 = channel0 - B * channel1;
+  if (IAC1 < 0) IAC1 = 0;
+  float IAC2 = C * channel0 - D * channel1;
+  if (IAC2 < 0) IAC1 = 0;
+  float IAC = (IAC1 >= IAC2) ? IAC1 : IAC2;
+  float LPC = GA * DF / (ALSIT * AGAIN);
+  float LUX = IAC * LPC;
+
+  return LUX;
 }
 
 uint16_t APDS9900::getALS_CDATA()

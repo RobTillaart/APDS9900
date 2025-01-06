@@ -29,16 +29,23 @@ setALSInterruptPersistence	KEYWORD2
 setPROXInterruptPersistence	KEYWORD2
 
 setProximityPulseCount	KEYWORD2
+getProximityPulseCount	KEYWORD2
 
 setLedDriveStrength	KEYWORD2
+getLedDriveStrength	KEYWORD2
+
 setProximityDiodeSelect	KEYWORD2
+getProximityDiodeSelect	KEYWORD2
+
 setALSGainControl	KEYWORD2
+getALSGainControl	KEYWORD2
 
 getRevision	KEYWORD2
 getDeviceID	KEYWORD2
 
 getStatus	KEYWORD2
 
+getLux	KEYWORD2
 getALS_CDATA	KEYWORD2
 getALS_IRDATA	KEYWORD2
 getPROX_DATA	KEYWORD2

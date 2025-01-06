@@ -62,16 +62,30 @@ public:
   //  PPCount
   //
   void     setProximityPulseCount(uint8_t value);
+  uint8_t  getProximityPulseCount();
 
   //
-  //  CONFIGURATION
+  //  CONFIGURATION datasheet P22
   //
   //  0 = 100 mA, 1 = 50 mA, 2 = 25 mA, 3 = 12.5 mA
-  bool     setLedDriveStrength(uint8_t value);
-  //  channel = 0 or 1
+  bool     setLedDriveStrength(uint8_t strength);
+  uint8_t  getLedDriveStrength();  //  returns 0,1,2,3
+
+  //  channel must be 2 - datasheet P22
+  //  read datasheet
   bool     setProximityDiodeSelect(uint8_t channel);
+  uint8_t  getProximityDiodeSelect();  //  returns 2
+
+  //  gain must be 0 - datasheet P22
+  //  read datasheet
+  bool     setProximityGain(uint8_t gain);
+  uint8_t  getProximityGain();  //  returns 00 == 1x.
+
   //  0 = 1x,  1 = 8x,  2 = 16x,  3 = 120x
-  bool     setALSGainControl(uint8_t value);
+  bool     setALSGain(uint8_t gain);
+  //  returns 1, 8, 16 or 120 actual gain.
+  uint8_t  getALSGain();
+
 
   //
   //  MISC
@@ -81,13 +95,17 @@ public:
 
   //
   //  STATUS
-  // 
+  //
   uint8_t  getStatus();
 
   //
   //  MEASUREMENTS
   //
-  //  RAW DATA
+  //  LUX - datasheet page 9.
+  //  Glass Attenuation Factor = default 0.48
+  float    getLux(float GA = 0.48);
+  //
+  //  raw data
   uint16_t getALS_CDATA();
   uint16_t getALS_IRDATA();
   uint16_t getPROX_DATA();
@@ -98,6 +116,7 @@ public:
   int      getLastError();
 
   //  SHOULD BE PROTECTED but allows full access at lowest level.
+  //  will be moved when not experimental.
   //
   int      writeRegister(uint8_t reg);  //  typically only COMMAND call.
   int      writeRegister(uint8_t reg, uint8_t value);

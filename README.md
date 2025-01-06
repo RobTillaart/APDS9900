@@ -18,9 +18,9 @@ Arduino library for the I2C APDS9900 light sensor and proximity detector.
 
 **Experimental**
 
-Not tested with hardware yet.
+This library is to read the APDS9900 or APDS9901 sensor.
 
-This library is to use the APDS9900 or APDS9901 sensor.
+The code is not tested with hardware yet.
 
 The APDS9900/ADPS9901 has two main functions:
 - measure ambient light (ALS), up to 16 bit.
@@ -32,7 +32,6 @@ The device can generate an interrupt (INT pin) based upon thresholds set.
 The library does not support the interrupt handling, which should be done by user code.
 
 Please read the datasheet carefully.
-
 
 _The documentation has to be elaborated after testing with hardware._
 
@@ -131,6 +130,7 @@ WARNING: USE WITH CARE
 
 - **void setProximityTime(uint8_t value = 0xFF)** this register should be set to 0xFF.
 Read datasheet P19.
+- **uint8_t getProximityTime()** return current setting.
 
 
 ### Wait time
@@ -173,19 +173,49 @@ Defines the amount of pulses that will be transmitted if proximity is enabled.
 See datasheet.
 
 - **void setProximityPulseCount(uint8_t value)** see datasheet
+- **uint8_t getProximityPulseCount()** returns current setting.
 
 
-### Configuration
+### LedDriveStrength
 
 - **bool setLedDriveStrength(uint8_t value)** 0 = 100 mA, 1 = 50 mA, 2 = 25 mA, 3 = 12.5 mA.
 Returns false if out of range.
+- **uint8_t getLedDriveStrength()** returns 0,1,2,3
+
+TODO Make ENUM for constants?
+
+|  value  |  strength  |
+|:-------:|:----------:|
+|    0    |   100 mA   |
+|    1    |    50 mA   |
+|    2    |    25 mA   |
+|    3    |   12.5 mA  |
+
+
+### ProximityDiodeSelect
+
+READ datasheet P22, must be 2.
+
 - **bool setProximityDiodeSelect(uint8_t channel)** channel = 0 or 1.
 Returns false if out of range.
-- **bool setALSGainControl(uint8_t value)** 0 = 1x, 1 = 8x, 2 = 16x, 3 = 120x
+- **uint8_t getProximityDiodeSelect()**
+
+### ProximityGain
+
+READ datasheet P22, must be 0.
+
+- **bool setProximityGain(uint8_t gain)** 0 = 1x, 1 = 8x, 2 = 16x, 3 = 120x
 Returns false if out of range.
+- **uint8_t getProximityGain()** returns 1.
 
-Make ENUM for constants?
 
+### ALSGain
+
+- **bool setPGain(uint8_t gain)** 0 = 1x, 1 = 8x, 2 = 16x, 3 = 120x
+Returns false if out of range.
+- **uint8_t getALSGain()** returns 1, 8, 16 or 120, the actual gain.
+
+TODO Make ENUM for constants?
 
 ### Misc
 
@@ -213,8 +243,13 @@ Read datasheet for the details.
 
 ### Measurements
 
+- **float getLux(float GA = 0.48)** Glass Attenuation Factor = default 0.48.
+Needs calibration depending on glass / lens.
+
+The raw data
+
 - **uint16_t getALS_CDATA()** Channel 0 diode
-- **uint16_t getALS_IRDATA()** Channel 1 diode (infra red)
+- **uint16_t getALS_IRDATA()** Channel 1 diode (IR = infra red)
 - **uint16_t getPROX_DATA()** 
 
 
@@ -222,7 +257,7 @@ Read datasheet for the details.
 
 - **int getLastError()** returns last error set. Check to detect e.g. I2C errors.
 
-The error handling itself needs to be elaborated
+The error handling itself needs to be elaborated.
 - table of errors.
 
 
@@ -230,22 +265,23 @@ The error handling itself needs to be elaborated
 
 Based upon figure 5.
 
-If the light is perpendicular one gets 100% of the light.
+If the light is perpendicular (0 degrees) one gets 100% of the light.
 If there is an angle the loss is roughly 2% per degree.
-
 
 ```
 0 degrees = 100%
 50 degrees = 0%
 angle = constrain(angle 0, 50)
 factor = (100 - angle * 2)
+lux = lux * factor * 0.01;
 ```
+
 
 ## Future
 
 #### Must
 
-- improve documentation
+- improve documentation.
 - get hardware to test
 - **clearInterrrupt()**
 
@@ -253,7 +289,7 @@ factor = (100 - angle * 2)
 
 - difference 9900/9901
   - break-out?
-- getter functions where needed.
+- **getter()** functions where needed.
   - e.g. interrupt thresholds.
 - optimization
   - cache certain registers?
@@ -265,6 +301,8 @@ factor = (100 - angle * 2)
 - improve error handling
 - enums / defines for constants.
 - names of functions may change.
+- cache control register?
+
 
 #### Wont
 
