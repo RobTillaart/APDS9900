@@ -294,6 +294,7 @@ lux = lux * factor * 0.01;
 - optimization
   - cache certain registers?
   - make write() conditionally where possible.  (analyze footprint impact)
+- add examples
 
 
 #### Could

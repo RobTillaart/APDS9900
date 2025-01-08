@@ -1,5 +1,5 @@
 //
-//    FILE: APDS9900_demo.ino
+//    FILE: APDS9900_test.ino
 //  AUTHOR: Rob Tillaart
 // PURPOSE: test basic behaviour
 //     URL: https://github.com/RobTillaart/APDS9900
@@ -50,13 +50,9 @@ void setup()
   Serial.print("   ALS gain:\t");
   Serial.println(apds.getALSGain());
   Serial.println();
-
   Serial.println();
-}
+  delay(2000);
 
-
-void loop()
-{
   Serial.println("LUX \tALSC \tIR \t PROX\t ");
   Serial.print("\t");
   Serial.print(apds.getLux());
@@ -69,6 +65,11 @@ void loop()
   Serial.println();
 
   delay(2000);
+}
+
+
+void loop()
+{
 }
 
 

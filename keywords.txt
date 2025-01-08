@@ -24,7 +24,6 @@ getWaitTime	KEYWORD2
 
 setALSThresholds	KEYWORD2
 setPROXThresholds	KEYWORD2
-
 setALSInterruptPersistence	KEYWORD2
 setPROXInterruptPersistence	KEYWORD2
 
@@ -37,8 +36,8 @@ getLedDriveStrength	KEYWORD2
 setProximityDiodeSelect	KEYWORD2
 getProximityDiodeSelect	KEYWORD2
 
-setALSGainControl	KEYWORD2
-getALSGainControl	KEYWORD2
+setALSGain	KEYWORD2
+getALSGain	KEYWORD2
 
 getRevision	KEYWORD2
 getDeviceID	KEYWORD2
@@ -50,6 +49,7 @@ getALS_CDATA	KEYWORD2
 getALS_IRDATA	KEYWORD2
 getPROX_DATA	KEYWORD2
 
+getLastError	KEYWORD2
 
 # Constants (LITERAL1)
 ADPS9900_LIB_VERSION	LITERAL1
