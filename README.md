@@ -126,7 +126,7 @@ TODO: run performance sketch.
 
 ### Proximity time
 
-WARNING: USE WITH CARE
+WARNING: USE WITH CARE - read datasheet
 
 - **void setProximityTime(uint8_t value = 0xFF)** this register should be set to 0xFF.
 Read datasheet P19.
@@ -200,6 +200,7 @@ READ datasheet P22, must be 2.
 Returns false if out of range.
 - **uint8_t getProximityDiodeSelect()**
 
+
 ### ProximityGain
 
 READ datasheet P22, must be 0.
@@ -216,6 +217,7 @@ Returns false if out of range.
 - **uint8_t getALSGain()** returns 1, 8, 16 or 120, the actual gain.
 
 TODO Make ENUM for constants?
+
 
 ### Misc
 
@@ -282,8 +284,7 @@ lux = lux * factor * 0.01;
 #### Must
 
 - improve documentation.
-- get hardware to test
-- **clearInterrrupt()**
+- get hardware to test library.
 
 #### Should
 
@@ -295,7 +296,8 @@ lux = lux * factor * 0.01;
   - cache certain registers?
   - make write() conditionally where possible.  (analyze footprint impact)
 - add examples
-
+- add **clearInterrrupt()**
+- add **bool isAwake()**
 
 #### Could
 
@@ -304,10 +306,8 @@ lux = lux * factor * 0.01;
 - names of functions may change.
 - cache control register?
 
-
 #### Wont
 
-- bool isAwake();
 
 ## Support
 
