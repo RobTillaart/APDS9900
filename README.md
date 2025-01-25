@@ -90,18 +90,20 @@ See example **TCA9548_demo_APDS9900.ino**
 
 ### I2C Performance
 
+Times in microseconds for ARV Arduino UNO.
 
-|  Clock     |  time (us)  |  Notes  |
-|:----------:|:-----------:|:--------|
-|   100 KHz  |             |  default 
-|   200 KHz  |             |
-|   300 KHz  |             |
-|   400 KHz  |             |  maximum datasheet
-|   500 KHz  |             |
-|   600 KHz  |             |
+To get your boards performance run the **APDS9900_performance.ino** sketch.
 
+|  Clock     |  ALS_CDATA  |   get_lux   |  Notes  |
+|:----------:|:-----------:|:-----------:|:--------|
+|   100 KHz  |     564     |     2204    |  default 
+|   200 KHz  |     328     |     1332    |
+|   300 KHz  |     240     |     1020    |
+|   400 KHz  |     204     |      892    |  maximum datasheet
+|   600 KHz  |     168     |      752    |
+|   800 KHz  |     152     |      704    |
 
-TODO: run performance sketch.
+Note: ALS_CDATA is equal fast as ALS_IRDATA and PROX_DATA
 
 
 ## Interface

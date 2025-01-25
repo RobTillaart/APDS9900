@@ -40,6 +40,8 @@ void setup()
 
   for (uint32_t speed = 100000; speed <= 800000; speed += 100000)
   {
+    Serial.println();
+    Serial.println();
     test(speed);
   }
 
@@ -52,13 +54,14 @@ void test(uint32_t speed)
   uint32_t start, stop;
   uint16_t x;
   Wire.setClock(speed);
-  
+  Serial.print("clock:\t");
+  Serial.println(speed);
+
   delay(100);
   start = micros();
   x = apds.getALS_CDATA();
   stop = micros();
-  Serial.print("ALS_CDATA");
-  Serial.print("\t");
+  Serial.print("ALS_CDATA:\t");
   Serial.print(stop - start);
   Serial.print("\t");
   Serial.println(x);
@@ -67,8 +70,7 @@ void test(uint32_t speed)
   start = micros();
   x = apds.getALS_IRDATA();
   stop = micros();
-  Serial.print("ALS_IRDATA");
-  Serial.print("\t");
+  Serial.print("ALS_IRDATA:\t");
   Serial.print(stop - start);
   Serial.print("\t");
   Serial.println(x);
@@ -77,8 +79,7 @@ void test(uint32_t speed)
   start = micros();
   x = apds.getPROX_DATA();
   stop = micros();
-  Serial.print("PROX_DATA");
-  Serial.print("\t");
+  Serial.print("PROX_DATA:\t");
   Serial.print(stop - start);
   Serial.print("\t");
   Serial.println(x);
@@ -87,8 +88,7 @@ void test(uint32_t speed)
   start = micros();
   float f = apds.getLux();
   stop = micros();
-  Serial.print("LUX");
-  Serial.print("\t");
+  Serial.print("LUX:\t\t");
   Serial.print(stop - start);
   Serial.print("\t");
   Serial.println(f);
@@ -96,7 +96,6 @@ void test(uint32_t speed)
 
 void loop()
 {
-}
 }
 
 
