@@ -20,7 +20,7 @@ Arduino library for the I2C APDS9900 light sensor and proximity detector.
 
 This library is to read the APDS9900 or APDS9901 sensor.
 
-The code is not tested with hardware yet.
+The code is limited tested with hardware.
 
 The APDS9900/ADPS9901 has two main functions:
 - measure ambient light (ALS), up to 16 bit.
@@ -33,10 +33,17 @@ The library does not support the interrupt handling, which should be done by use
 
 Please read the datasheet carefully.
 
-_The documentation has to be elaborated after testing with hardware._
+_The documentation must be elaborated._
 
 
 As always feedback is welcome.
+
+
+### 0.2.0 breaking change
+
+All pre 0.2.0 code versions are obsolete.
+A low level bug prevented correct reading and writing of registers.
+Found and fixed during first hardware test.
 
 
 ### Related
@@ -108,34 +115,36 @@ TODO: run performance sketch.
 - **APDS9900(uint8_t address, TwoWire \*wire = &Wire)** set address and optional select I2C bus.
 - **ADPS9901(uint8_t address, TwoWire \*wire = &Wire)** set address and optional select I2C bus.
 - **bool begin()** checks if the device address is visible on the I2C bus.
+Also enables all subsystems and switches power on.
 - **bool isConnected()** Checks if device address can be found on I2C bus.
-- **uint8_t getAddress()** Returns the address 
+- **uint8_t getAddress()** Returns the fixed address 0x39.
 
 
 ### Sleep
 
-- **void wakeUp()** switches the power on of the device.
-- **void sleep()** switches the power off of the device.
+- **void wakeUp()** switches the power on of the device + enables all subsystems.
+- **void sleep()** switches the power off of the device + disables all subsystems.
 
 
 ### Integration time
 
 - **void setIntegrationTime(uint16_t milliseconds)** milliseconds in steps of 2.72 ms, range 3..696
-- **uint16_t getIntegrationTime()** returns set value, might differ slightly due to rounding.
+- **uint16_t getIntegrationTime()** returns the set value, might differ slightly due to rounding.
 
 
 ### Proximity time
 
 WARNING: USE WITH CARE - read datasheet
 
-- **void setProximityTime(uint8_t value = 0xFF)** this register should be set to 0xFF.
-Read datasheet P19.
-- **uint8_t getProximityTime()** return current setting.
+- **void setProximityTime(uint16_t milliseconds = 1)** this register should be set to 0xFF.
+This equals value 1.
+See datasheet page 19.
+- **uint8_t getProximityTime()** returns the current setting.
 
 
 ### Wait time
 
-The WTIME can be set in two ranges, depending on a WLONG bit (See P19, P21)
+The WTIME can be set in two ranges, depending on a WLONG bit (See page 19, page 21)
 
 - WLONG == false: milliseconds in steps of 2.72 ms, range 3..696
 - WLONG == true:  milliseconds in steps of 32 ms, range 32..8192
@@ -172,7 +181,7 @@ Persistency table:
 Defines the amount of pulses that will be transmitted if proximity is enabled.
 See datasheet.
 
-- **void setProximityPulseCount(uint8_t value)** see datasheet
+- **void setProximityPulseCount(uint8_t value)** see datasheet.
 - **uint8_t getProximityPulseCount()** returns current setting.
 
 
@@ -180,7 +189,7 @@ See datasheet.
 
 - **bool setLedDriveStrength(uint8_t value)** 0 = 100 mA, 1 = 50 mA, 2 = 25 mA, 3 = 12.5 mA.
 Returns false if out of range.
-- **uint8_t getLedDriveStrength()** returns 0,1,2,3
+- **uint8_t getLedDriveStrength()** returns set value: 0, 1, 2, 3
 
 TODO Make ENUM for constants?
 
@@ -194,7 +203,7 @@ TODO Make ENUM for constants?
 
 ### ProximityDiodeSelect
 
-READ datasheet P22, must be 2.
+READ datasheet page 22, must be 2.
 
 - **bool setProximityDiodeSelect(uint8_t channel)** channel = 0 or 1.
 Returns false if out of range.
@@ -212,7 +221,7 @@ Returns false if out of range.
 
 ### ALSGain
 
-- **bool setPGain(uint8_t gain)** 0 = 1x, 1 = 8x, 2 = 16x, 3 = 120x
+- **bool setALSGain(uint8_t gain)** 0 = 1x, 1 = 8x, 2 = 16x, 3 = 120x
 Returns false if out of range.
 - **uint8_t getALSGain()** returns 1, 8, 16 or 120, the actual gain.
 
