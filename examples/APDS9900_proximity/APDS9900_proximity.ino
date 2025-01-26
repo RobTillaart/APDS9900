@@ -3,7 +3,8 @@
 //  AUTHOR: Rob Tillaart
 // PURPOSE: test basic behaviour
 //     URL: https://github.com/RobTillaart/APDS9900
-
+//
+//  DATASHEET: page 10 + 11
 
 #include "APDS9900.h"
 #include "Wire.h"
