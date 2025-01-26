@@ -28,7 +28,7 @@ public:
   //
   //  SLEEP
   //
-  void     wakeUp();  //  set PON bit P8
+  void     wakeUp();  //  full awake Enable WEN = Wait, PEN = Prox, AEN = ALS, PON = Power On
   void     sleep();
 
   //

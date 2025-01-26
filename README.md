@@ -20,16 +20,19 @@ Arduino library for the I2C APDS9900 light sensor and proximity detector.
 
 This library is to read the APDS9900 or APDS9901 sensor.
 
-The code is limited tested with hardware.
-
 The APDS9900/ADPS9901 has two main functions:
 - measure ambient light (ALS), up to 16 bit.
-- proximity detection.
+- proximity detection, (no conversion to distance yet).
 
 The device supports a sleep mode for power efficiency.
 
 The device can generate an interrupt (INT pin) based upon thresholds set.
 The library does not support the interrupt handling, which should be done by user code.
+
+The APDS9900 and APDS9901 are functionally equivalent, however there
+is an electrical difference. See datasheet page 3 and 4 Vbus + getDeviceID().
+
+The code is limited tested with APDS9900 only.
 
 Please read the datasheet carefully.
 
@@ -265,6 +268,8 @@ The raw data
 - **uint16_t getALS_IRDATA()** Channel 1 diode (IR = infra red)
 - **uint16_t getPROX_DATA()** 
 
+There is no conversion from raw proximity data to distance as this depends
+on several parameters and is rather complex. See page 10 + 11 datasheet.
 
 ### Error
 
@@ -276,7 +281,7 @@ The error handling itself needs to be elaborated.
 
 ### Angle correction
 
-Based upon figure 5.
+Based upon figure 5 datasheet.
 
 If the light is perpendicular (0 degrees) one gets 100% of the light.
 If there is an angle the loss is roughly 2% per degree.
@@ -295,23 +300,26 @@ lux = lux * factor * 0.01;
 #### Must
 
 - improve documentation.
-- get hardware to test library.
+- test library.
 
 #### Should
 
 - difference 9900/9901
   - break-out?
 - **getter()** functions where needed.
-  - e.g. interrupt thresholds.
-- optimization
-  - cache certain registers?
-  - make write() conditionally where possible.  (analyze footprint impact)
-- add examples
-- add **clearInterrrupt()**
-- add **bool isAwake()**
+  - e.g. interrupt thresholds. (readRegister for now)
+- investigate interrupts
+  - add **clearInterrrupt()**
 
 #### Could
 
+- add **bool enable(bool ALS, bool IR, bool PROX)** does disabling too.
+- convert proxy register value to distance?
+  - page 10 11 datasheet (depends on many parameters).
+- add examples
+- optimization
+  - cache certain registers?
+  - make write() conditionally where possible.  (analyze footprint impact)
 - improve error handling
 - enums / defines for constants.
 - names of functions may change.
@@ -319,6 +327,7 @@ lux = lux * factor * 0.01;
 
 #### Wont
 
+- add **bool isAwake()** too simple.
 
 ## Support
 

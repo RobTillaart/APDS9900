@@ -33,7 +33,7 @@ void setup()
   Serial.print("Revision:\t");
   Serial.println(apds.getRevision(), HEX);  //  0x01
   Serial.print("DeviceID:\t");
-  Serial.println(apds.getDeviceID(), HEX);  //  0x29 (41)
+  Serial.println(apds.getDeviceID(), HEX);  //  0x29 for APDS9900, 0x20 for APDS9901
   Serial.print("  Status:\t");
   Serial.println(apds.getStatus(), HEX);    //  ??
   Serial.println();
